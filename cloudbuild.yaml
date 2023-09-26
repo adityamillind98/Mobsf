@@ -8,14 +8,14 @@ steps:
         "--build-arg",
         "NODE_ENV=$_NODE_ENV_",
         "-t",
-        "gcr.io/stylishopdev/mobsf:$COMMIT_SHA",
+        "gcr.io/$PROJECT_ID/mobsf:$COMMIT_SHA",
         ".",
       ]
     env:
       - "NODE_ENV=$_NODE_ENV_"
  
   - name: "gcr.io/cloud-builders/docker"
-    args: ["push", "gcr.io/stylishopdev/mobsf:$COMMIT_SHA"]
+    args: ["push", "gcr.io/$PROJECT_ID/mobsf:$COMMIT_SHA"]
     env:
       - "NODE_ENV=$_NODE_ENV_"
       
@@ -26,7 +26,7 @@ steps:
       - "deploy"
       - "mobsf-scan"
       - "--image"
-      - "gcr.io/stylishopdev/mobsf:$COMMIT_SHA"
+      - "gcr.io/$PROJECT_ID/mobsf:$COMMIT_SHA"
       - "--region"
       - "us-central1"
       - "--platform"
