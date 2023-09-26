@@ -1,0 +1,41 @@
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "build", 
+        "-f",
+        ".Dockerfile",
+        "--build-arg",
+        "NODE_ENV=$_NODE_ENV_",
+        "-t",
+        "gcr.io/stylishopdev/mobsf:latest",
+        ".",
+      ]
+    env:
+      - "NODE_ENV=$_NODE_ENV_"
+  # - name: "gcr.io/cloud-builders/docker"
+  #  args: ["builds", "submit", "-t", "gcr.io/$PROJECT_ID/sup-portal-service:$COMMIT_SHA"]
+  # push the container image to Container Registry
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "gcr.io/stylishopdev/mobsf:latest"]
+    env:
+      - "NODE_ENV=$_NODE_ENV_"
+   # Deploy container image to Cloud Run
+  - name: "gcr.io/cloud-builders/gcloud"
+    args:
+      - "run"
+      - "deploy"
+      - "mobsf-scan"
+      - "--image"
+      - "gcr.io/stylishopdev/mobsf:latest"
+      - "--region"
+      - "us-central1"
+      - "--platform"
+      - "managed"
+      - "--allow-unauthenticated"
+      - "--memory"
+      - "2Gi"
+      - "--cpu"
+      - "1.0"
+    env:
+      - "NODE_ENV=$_NODE_ENV_"
+timeout: 12000s
