@@ -8,18 +8,17 @@ steps:
         "--build-arg",
         "NODE_ENV=$_NODE_ENV_",
         "-t",
-        "gcr.io/stylishopdev/mobsf:latest",
+        "gcr.io/stylishopdev/mobsf:$COMMIT_SHA",
         ".",
       ]
     env:
       - "NODE_ENV=$_NODE_ENV_"
-  # - name: "gcr.io/cloud-builders/docker"
-  #  args: ["builds", "submit", "-t", "gcr.io/$PROJECT_ID/sup-portal-service:$COMMIT_SHA"]
-  # push the container image to Container Registry
+ 
   - name: "gcr.io/cloud-builders/docker"
-    args: ["push", "gcr.io/stylishopdev/mobsf:latest"]
+    args: ["push", "gcr.io/stylishopdev/mobsf:$COMMIT_SHA"]
     env:
       - "NODE_ENV=$_NODE_ENV_"
+      
    # Deploy container image to Cloud Run
   - name: "gcr.io/cloud-builders/gcloud"
     args:
@@ -27,7 +26,7 @@ steps:
       - "deploy"
       - "mobsf-scan"
       - "--image"
-      - "gcr.io/stylishopdev/mobsf:latest"
+      - "gcr.io/stylishopdev/mobsf:$COMMIT_SHA"
       - "--region"
       - "us-central1"
       - "--platform"
