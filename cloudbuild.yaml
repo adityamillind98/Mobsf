@@ -33,9 +33,9 @@ steps:
       - "managed"
       - "--allow-unauthenticated"
       - "--memory"
-      - "2Gi"
+      - "8Gi"
       - "--cpu"
-      - "1.0"
+      - "4.0"
     env:
       - "NODE_ENV=$_NODE_ENV_"
 timeout: 12000s
